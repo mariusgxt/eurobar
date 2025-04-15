@@ -11,13 +11,13 @@
     rgba(226, 221, 217, 0.3) 56.35%,
     #d6ccca 100%
   );
-  box-shadow: 0px 12.93px 28.74px 0px #ffd28db2 inset;
-  border-radius: 50%;
+  box-shadow: 0px 12.93px 28.74px 0px #6988c2b2 inset;
+  border-radius: 0%;
   width: 200vw;
   height: 200vw;
   top: -60vw;
   left: -14.27vw;
-  transform: rotate(15.25deg);
+  transform: skewX(20deg);
 }
 
 .App {
@@ -49,16 +49,10 @@ text {
   margin-bottom: 8px;
 }
 
-.Logo--react {
+.Logo--main {
   width: 100px;
   height: 100px;
-  animation: Logo--spin infinite 20s linear;
-}
-
-.Logo--lynx {
-  width: 100px;
-  height: 100px;
-  animation: Logo--shake infinite 0.5s ease;
+  animation: Logo--spin infinite 2s linear;
 }
 
 @keyframes Logo--spin {

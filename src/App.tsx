@@ -23,12 +23,10 @@ export function App() {
       <view className='App'>
         <view className='Banner'>
           <view className='Logo' bindtap={onTap}>
-            {alterLogo
-              ? <image src={reactLynxLogo} className='Logo--react' />
-              : <image src={lynxLogo} className='Logo--lynx' />}
+            <image src={reactLynxLogo} className='Logo--main' />
           </view>
-          <text className='Title'>React</text>
-          <text className='Subtitle'>on Lynx</text>
+          <text className='Title'>Eurobar</text>
+          <text className='Subtitle'>Felix ist ein Knecht</text>
         </view>
         <view className='Content'>
           <image src={arrow} className='Arrow' />
