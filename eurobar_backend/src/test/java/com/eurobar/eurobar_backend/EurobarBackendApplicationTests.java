@@ -1,10 +1,10 @@
-package com.eurobar.eurobar;
+package com.eurobar.eurobar_backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EurobarApplicationTests {
+class EurobarBackendApplicationTests {
 
 	@Test
 	void contextLoads() {

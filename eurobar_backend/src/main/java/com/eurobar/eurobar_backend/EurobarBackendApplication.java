@@ -1,13 +1,13 @@
-package com.eurobar.eurobar;
+package com.eurobar.eurobar_backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EurobarApplication {
+public class EurobarBackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EurobarApplication.class, args);
+		SpringApplication.run(EurobarBackendApplication.class, args);
 	}
 
 }
