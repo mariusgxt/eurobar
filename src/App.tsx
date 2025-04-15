@@ -44,6 +44,7 @@ export function App() {
             Scan Barcode
           </button>
         </view>
+        
         <view style={{ flex: 1 }}></view>
       </view>
     </view>
