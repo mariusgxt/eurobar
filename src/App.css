@@ -1,5 +1,5 @@
 :root {
-  background-color: #000;
+  background-color: #0051ba;
   --color-text: #fff;
 }
 
@@ -66,7 +66,7 @@ text {
 .Logo--main {
   width: 100px;
   height: 100px;
-  animation: Logo--spin infinite 2s linear;
+  animation: Logo--spin infinite 20s ;
 }
 
 @keyframes Logo--spin {
