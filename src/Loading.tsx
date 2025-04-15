@@ -21,10 +21,12 @@ export function App() {
       <view className='App'>
         <view className='Banner'>
           <view className='Logo' bindtap={onTap}>
-            <image src={europeLogo} className='Logo--main' />
+            {alterLogo
+            ? <image src={europeLogo} className='Logo--main' />
+            : <text>Felix ist ein Penner</text>}
           </view>
           <text className='Title'>EuroBar</text>
-          <text className='Subtitle'>*Not official*</text>
+          <text className='Hint'>*Not official</text>
           </view>
       </view>
   )
