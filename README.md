@@ -88,7 +88,7 @@ Here’s an overview of the project structure:
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+Unfinished.
 
 ---
 
