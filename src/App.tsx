@@ -17,11 +17,6 @@ export function App() {
     setAlterLogo(!alterLogo)
   }, [alterLogo])
 
-  const onScanBarcode = useCallback(() => {
-    console.info('Barcode scanning initiated...')
-    // Add barcode scanning logic here
-  }, [])
-
   return (
     <view>
       <view className='Background' />
@@ -40,9 +35,6 @@ export function App() {
             Edit<text style={{ fontStyle: 'italic' }}>{' src/App.tsx '}</text>
             to see updates!
           </text>
-          <button className='ScanButton' onClick={onScanBarcode}>
-            Scan Barcode
-          </button>
         </view>
         
         <view style={{ flex: 1 }}></view>
