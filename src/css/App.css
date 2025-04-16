@@ -3,6 +3,16 @@
   --color-text: #fff;
 }
 
+.theme-light {
+  --color: black;
+  --bg: white;
+}
+
+.theme-dark {
+  --color: white;
+  --bg: black;
+}
+
 .Background {
   position: fixed;
   background: radial-gradient(

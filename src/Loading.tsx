@@ -16,6 +16,7 @@ export function App() {
   }, [alterLogo])
 
   return (
+    <view className='theme-light'>
     <view className='App'>
       <view className='Banner'>
         <view className='Logo' bindtap={onTap}>
@@ -26,6 +27,7 @@ export function App() {
         <text className='Title'>EuroBar</text>
         <text className='Hint'>*Not official</text>
         </view>
+    </view>
     </view>
   )
 }
