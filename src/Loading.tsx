@@ -16,13 +16,13 @@ export function App() {
   }, [alterLogo])
 
   return (
-    <view className='theme-light'>
     <view className='App'>
+      <view className='theme-dark'>
       <view className='Banner'>
         <view className='Logo' bindtap={onTap}>
           {alterLogo
-          ? <image src={europeLogo} className='Logo--main' />
-          : <text>Felix ist ein Penner</text>}
+          ? <text className='Description'>Felix ist ein Penner</text>
+          : <image src={europeLogo} className='Logo--main' />}
         </view>
         <text className='Title'>EuroBar</text>
         <text className='Hint'>*Not official</text>

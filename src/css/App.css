@@ -1,6 +1,5 @@
 :root {
   background-color: #0051ba;
-  --color-text: #fff;
 }
 
 .theme-light {
@@ -115,6 +114,7 @@ text {
 .Title {
   font-size: 36px;
   font-weight: 700;
+  color: var(--color);
 }
 
 .Subtitle {
@@ -126,12 +126,30 @@ text {
 
 .Description {
   font-size: 20px;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--color);
   margin: 15rpx;
 }
 
 .Hint {
   font-size: 12px;
   margin: 5px;
-  color: rgba(255, 255, 255, 0.65);
+  color: var(--color);
+}
+
+/* From Uiverse.io by ke1221 */ 
+.neumorphic-button {
+  color: #090909;
+  padding: 0.7em 1.7em;
+  font-size: 18px;
+  border-radius: 0.5em;
+  background: #ffffff;
+  cursor: pointer;
+  border: 1px solid #ffffff;
+  transition: all 0.3s;
+  box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+}
+
+.neumorphic-button:active {
+  color: #666;
+  box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
 }
