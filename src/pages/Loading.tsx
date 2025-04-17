@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from '@lynx-js/react'
+import { useNavigate } from 'react-router';
 
-import './../css/App.css'
+import './../css/Loading.css'
 import europeLogo from './../assets/europeLogo.png'
 
 export function Loading() {
+  const nav = useNavigate(); // Function to navigate to different pages
   const [alterLogo, setAlterLogo] = useState(false)
 
   useEffect(() => {
@@ -19,7 +21,7 @@ export function Loading() {
     <view className='App'>
       <view className='theme-dark'>
       <view className='Banner'>
-        <view className='Logo' bindtap={onTap}>
+        <view className='Logo' bindtap={() => nav('/home')}>
           {alterLogo
           ? <text className='Description'>Test</text>
           : <image src={europeLogo} className='Logo--main' />}
