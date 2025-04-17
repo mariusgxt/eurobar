@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from '@lynx-js/react'
 
-import './css/App.css'
-import europeLogo from './assets/europeLogo.png'
+import './../css/App.css'
+import europeLogo from './../assets/europeLogo.png'
 
-export function App() {
+export function Loading() {
   const [alterLogo, setAlterLogo] = useState(false)
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export function App() {
       <view className='Banner'>
         <view className='Logo' bindtap={onTap}>
           {alterLogo
-          ? <text className='Description'>Felix ist ein Penner</text>
+          ? <text className='Description'>Test</text>
           : <image src={europeLogo} className='Logo--main' />}
         </view>
         <text className='Title'>EuroBar</text>

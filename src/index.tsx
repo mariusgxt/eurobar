@@ -1,8 +1,19 @@
 import { root } from '@lynx-js/react'
+import { MemoryRouter, Routes, Route } from 'react-router';
 
-import { App } from './Loading.jsx'
+// Importing routes -> explained here: 
+// https://lynxjs.org/react/routing.html
 
-root.render(<App />)
+import { Loading} from './pages/Loading.jsx'
+
+//Specify routing with the paths
+root.render(
+  <MemoryRouter>
+    <Routes>
+      <Route path="/" element={<Loading />} />
+    </Routes>
+  </MemoryRouter>,
+)
 
 if (import.meta.webpackHot) {
   import.meta.webpackHot.accept()
