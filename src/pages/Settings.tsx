@@ -13,7 +13,7 @@ export function Settings(){
                     <view className='Logo'>
                         <text className='Description' bindtap={() => nav('/')}>Click Me!</text>
                     </view>
-                    <text className='Title'>Homepage</text>
+                    <text className='Title'>Settings</text>
                     <text className='Hint'>*TODO</text>
                 </view>
             </view>

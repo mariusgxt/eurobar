@@ -11,7 +11,7 @@ export function Homepage(){
             <view className='theme-dark'>
                 <view className='Banner'>
                     <view className='Logo'>
-                        <text className='Description' bindtap={() => nav('/')}>Click Me!</text>
+                        <text className='Description' bindtap={() => nav('/login')}>Login!</text>
                     </view>
                     <text className='Title'>Homepage</text>
                     <text className='Hint'>*TODO</text>

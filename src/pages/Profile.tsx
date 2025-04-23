@@ -13,7 +13,7 @@ export function Profile(){
                     <view className='Logo'>
                         <text className='Description' bindtap={() => nav('/')}>Click Me!</text>
                     </view>
-                    <text className='Title'>Homepage</text>
+                    <text className='Title'>Profile</text>
                     <text className='Hint'>*TODO</text>
                 </view>
             </view>

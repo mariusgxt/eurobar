@@ -5,7 +5,7 @@
       "name": "test",
       "dependencies": {
         "@lynx-js/react": "^0.106.4",
-        "react-router": "6",
+        "react-router": "^6.30.0",
       },
       "devDependencies": {
         "@lynx-js/qrcode-rsbuild-plugin": "^0.3.5",

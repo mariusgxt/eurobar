@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import './../css/Homepage.css'
+import './../css/Scanner.css'
 
 
 export function Scanner(){
@@ -7,14 +7,15 @@ export function Scanner(){
     const nav = useNavigate(); // Function to navigate to different pages
     return (
         <view className='App'>
-            <view className='Background'></view>
             <view className='theme-dark'>
                 <view className='Banner'>
                     <view className='Logo'>
-                        <text className='Description' bindtap={() => nav('/')}>Click Me!</text>
+                        <text className='Description' bindtap={() => nav('/home')}>Homepage!</text>
                     </view>
-                    <text className='Title'>Homepage</text>
-                    <text className='Hint'>*TODO</text>
+                    <text className='Title'>Scanner</text>
+                    <view className='inputView'>
+                        <input className='inputBox' placeholder="Type Barcode Here"/>
+                    </view>
                 </view>
             </view>
         </view>
