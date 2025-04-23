@@ -143,25 +143,3 @@
     color: var(--color);
     opacity: 0.5; /* Firefox */
 }
-
-::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color: var(--color);
-}
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color: var(--color);
-   opacity:  1;
-}
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color: var(--color);
-   opacity:  1;
-}
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: var(--color);
-}
-::-ms-input-placeholder { /* Microsoft Edge */
-    color: var(--color);
-}
-
-::placeholder { /* Most modern browsers support this now. */
-    color: var(--color);
-}

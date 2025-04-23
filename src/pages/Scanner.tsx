@@ -1,10 +1,19 @@
 import { useNavigate } from 'react-router';
-import './../css/Scanner.css'
+import './../css/Scanner.css';
+import { useState } from '@lynx-js/react/legacy-react-runtime';
 
-
-export function Scanner(){
-
+export function Scanner() {
+    const [search, setBarcode] = useState(''); // Initialize state for search
     const nav = useNavigate(); // Function to navigate to different pages
+
+    const handleInput = (event: any) => {
+        const value = event.target.value; // Get the input value
+        setBarcode(value); // Update the state
+        console.log(value); // Log the input value
+    };
+
+    console.log(search); // Log the current value of search
+
     return (
         <view className='App'>
             <view className='theme-dark'>
@@ -14,10 +23,15 @@ export function Scanner(){
                     </view>
                     <text className='Title'>Scanner</text>
                     <view className='inputView'>
-                        <input className='inputBox' placeholder="Type Barcode Here"/>
+                        <input
+                            onInput={handleInput} // Update state on input change
+                            className='inputBox'
+                            placeholder="Type Barcode Here"
+                            value={search} // Bind input value to state
+                        />
                     </view>
                 </view>
             </view>
         </view>
-    )
+    );
 }
