@@ -3,7 +3,9 @@ import './../css/Login.css'
 
 
 export function Login(){
-
+    const Login = () => {
+        return <div>Login Page</div>;
+    };
     const nav = useNavigate(); // Function to navigate to different pages
     return (
         <view className='App'>
@@ -21,3 +23,4 @@ export function Login(){
         </view>
     )
 }
+export default Login;

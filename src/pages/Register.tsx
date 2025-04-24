@@ -3,7 +3,9 @@ import './../css/Homepage.css'
 
 
 export function Register(){
-
+    const Register = () => {
+        return <div>Register Page</div>;
+    };
     const nav = useNavigate(); // Function to navigate to different pages
     return (
         <view className='App'>
@@ -20,3 +22,4 @@ export function Register(){
         </view>
     )
 }
+export default Register;

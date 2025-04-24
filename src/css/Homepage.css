@@ -1,6 +1,4 @@
-:root{
-    background-color: #0051ba;
-}
+
 
 .theme-light {
     --color: black;
@@ -25,6 +23,7 @@
 }
 
 .App {
+    background-color: #88301f;
     position: relative;
     min-height: 100vh;
     display: flex;
@@ -54,7 +53,7 @@
     font-size: 20px;
     color: var(--color);
     margin: 15px;
-}
+  }
   
 .Hint {
     font-size: 16px;
@@ -66,10 +65,10 @@
     position: fixed;
     background: radial-gradient(
         circle,
-        rgba(232, 241, 241, 0.1) 30%,
-        #d6ccca 100%
+        rgba(252, 253, 253, 0.1) 30%,
+        #88301f 100%
     );
-    box-shadow: 0px 8px 20px 0px rgba(105, 136, 194, 0.7) inset;
+    box-shadow: 0px 8px 20px 0px rgba(0, 8, 21, 0.7) inset;
     border-radius: 50%;
     width: 150vw;
     height: 150vw;

@@ -5,6 +5,9 @@ import './../css/Loading.css'
 import europeLogo from './../assets/europeLogo.png'
 
 export function Loading() {
+  const Loading = () => {
+    return <div>Loading Page</div>;
+  };
   const nav = useNavigate(); // Function to navigate to different pages
   const [alterLogo, setAlterLogo] = useState(false)
 
@@ -33,3 +36,4 @@ export function Loading() {
     </view>
   )
 }
+export default Loading;

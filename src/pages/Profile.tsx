@@ -3,6 +3,9 @@ import './../css/Homepage.css'
 
 
 export function Profile(){
+    const Profile = () => {
+        return <div>Profile Page</div>;
+    };
 
     const nav = useNavigate(); // Function to navigate to different pages
     return (
@@ -20,3 +23,4 @@ export function Profile(){
         </view>
     )
 }
+export default Profile;
