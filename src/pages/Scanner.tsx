@@ -1,8 +1,12 @@
 import { useNavigate } from 'react-router';
-import './../css/Scanner.css';
 import { useState } from '@lynx-js/react/legacy-react-runtime';
+import BarcodeScanner from "react-qr-barcode-scanner";
+
+import './../css/Scanner.css';
+
 
 export function Scanner() {
+    const [data, setData] = useState("Not Found");
     const [search, setBarcode] = useState(''); // Initialize state for search
     const nav = useNavigate(); // Function to navigate to different pages
 
