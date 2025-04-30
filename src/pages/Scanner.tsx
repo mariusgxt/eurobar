@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 import { useState } from '@lynx-js/react/legacy-react-runtime';
 import BarcodeScanner from "react-qr-barcode-scanner";
 
-import './../css/Scanner.css';
+import './../css/main.css';
 
 export function Scanner() {
     const Scanner = () => {

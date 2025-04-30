@@ -1,6 +1,5 @@
 import { root } from '@lynx-js/react'
 import { MemoryRouter, Routes, Route } from 'react-router';
-import { lazy } from '@lynx-js/react'
 
 // Importing routes -> explained here: 
 // https://lynxjs.org/react/routing.html

@@ -1,0 +1,158 @@
+/*main.css - Unified theme for eurobar app*/
+
+.theme-light,
+.theme-light view,
+.theme-light text {
+  --color: #222;
+  --bg: #fff;
+}
+.theme-dark,
+.theme-dark view,
+.theme-dark text {  
+  --color: #fff;
+  --bg: #111;
+}
+
+/* App container */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Backgrounds */
+.Background {
+  position: fixed;
+  background: radial-gradient(
+    circle,
+    rgba(252, 253, 253, 0.1) 30%,
+  );
+  box-shadow: 0px 8px 20px 0px rgba(0, 8, 21, 0.7) inset;
+  border-radius: 50%;
+  width: 150vw;
+  height: 150vw;
+  top: -50vw;
+  left: -10vw;
+}
+/* Scanner/Loading variant */
+.theme-dark .Background {
+  background: radial-gradient(
+    circle,
+    rgba(232, 241, 241, 0.1) 30%,
+  );
+  box-shadow: 0px 8px 20px 0px rgba(105, 136, 194, 0.7) inset;
+}
+
+/* Flex content */
+.Content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Banner and Logo */
+.Banner {
+  flex: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+.Logo {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.Logo--main {
+  width: 100px;
+  height: 100px;
+  animation: Logo--spin infinite 20s, Logo-shake 2s ease-in-out;
+}
+
+/* Animations */
+@keyframes Logo--spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes Logo-shake {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+/* Typography */
+.Text {
+  color: var(--color);
+}
+.Title {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--color);
+}
+.Subtitle {
+  font-style: italic;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.Description {
+  font-size: 20px;
+  color: var(--color);
+  margin: 15px;
+}
+.Hint {
+  font-size: 16px;
+  margin: 5px;
+  color: var(--color);
+}
+.Password {
+  font-size: 16px;
+  margin: 5px;
+  color: var(--color);
+}
+
+/* Arrow icon */
+.Arrow {
+  width: 24px;
+  height: 24px;
+}
+
+/* Scanner input */
+.inputView {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  margin: 0px 5px;
+}
+.inputBox {
+  width: 200px;
+  height: 28px;
+  border-radius: 5px;
+  padding: 0px 5px;
+}
+::placeholder {
+  color: var(--color);
+  opacity: 0.5;
+}
+
+/* Neumorphic button (from Loading) */
+.neumorphic-button {
+  color: #090909;
+  padding: 0.7em 1.7em;
+  font-size: 18px;
+  border-radius: 0.5em;
+  cursor: pointer;
+  border: 1px solid #ffffff;
+  transition: all 0.3s;
+  box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+}
+.neumorphic-button:active {
+  color: #666;
+  box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
+}

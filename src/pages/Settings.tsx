@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import './../css/Homepage.css'
+import './../css/main.css'
 
 
 export function Settings(){
@@ -10,7 +10,7 @@ export function Settings(){
     return (
         <view className='App'>
             <view className='Background'></view>
-            <view className='theme-dark'>
+            <view className='theme-light'>
                 <view className='Banner'>
                     <view className='Logo'>
                         <text className='Description' bindtap={() => nav('/')}>Click Me!</text>

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import './../css/Homepage.css'
+import './../css/main.css'
 
 
 export function Register(){

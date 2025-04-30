@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from '@lynx-js/react'
 import { useNavigate } from 'react-router';
 
-import './../css/Loading.css'
+import './../css/main.css'
 import europeLogo from './../assets/europeLogo.png'
 
 export function Loading() {
