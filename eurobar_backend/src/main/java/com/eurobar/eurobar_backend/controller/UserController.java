@@ -25,16 +25,17 @@ public class UserController {
     
     @GetMapping("")
     public ResponseEntity<?> getAllUsers(
-            @RequestParam(required = false) String username,
-            @RequestParam(required = false) String email){
+        @RequestParam(name = "username", required = false) String username,
+        @RequestParam(name = "email", required = false) String email){
         return ResponseEntity.ok("Retrieved users with filters: username=" + 
-                username + ", email=" + email);
+            username + ", email=" + email);
     }
     
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getUserById(@PathVariable Long userId) {
+    public ResponseEntity<?> getUserById(@PathVariable(name = "userId") Long userId) {
         return ResponseEntity.ok("Retrieved user with ID: " + userId);
     }
+
 
     @PostMapping("")
     public ResponseEntity<?> createUser(@RequestBody User userRequest) {
