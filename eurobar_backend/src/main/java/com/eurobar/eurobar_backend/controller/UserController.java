@@ -1,5 +1,6 @@
 package com.eurobar.eurobar_backend.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,9 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eurobar.eurobar_backend.enities.User;
+
+import com.eurobar.eurobar_backend.repositories.UserRepository;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
+    @Autowired
+    private UserRepository userRepository;
     
     @GetMapping("")
     public ResponseEntity<?> getAllUsers(
@@ -28,10 +36,11 @@ public class UserController {
     public ResponseEntity<?> getUserById(@PathVariable Long userId) {
         return ResponseEntity.ok("Retrieved user with ID: " + userId);
     }
-    
+
     @PostMapping("")
-    public ResponseEntity<?> createUser(@RequestBody Object userRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
+    public ResponseEntity<?> createUser(@RequestBody User userRequest) {
+        User savedUser = userRepository.save(userRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
     
     @PutMapping("/{userId}")
