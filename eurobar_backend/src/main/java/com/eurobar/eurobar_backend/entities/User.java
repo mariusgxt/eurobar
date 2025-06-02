@@ -1,4 +1,4 @@
-package com.eurobar.eurobar_backend.enities;
+package com.eurobar.eurobar_backend.entities;
 
 import jakarta.persistence.*;
 

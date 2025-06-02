@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eurobar.eurobar_backend.enities.User;
-
+import com.eurobar.eurobar_backend.entities.User;
 import com.eurobar.eurobar_backend.repositories.UserRepository;
 
 @RestController
