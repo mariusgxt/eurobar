@@ -2,6 +2,8 @@ package com.eurobar.eurobar_backend.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -9,8 +11,8 @@ import jakarta.persistence.Table;
 @Table(name = "products")
 public class Product {
     @Id
-    @Column(nullable = false, unique = true)
-    private String barcode;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long barcode;
 
     @Column(nullable = false)
     private String region;
@@ -20,14 +22,14 @@ public class Product {
 
     public Product() {}
 
-    public Product(String barcode, String region, String company) {
+    public Product(Long barcode, String region, String company) {
         this.barcode = barcode;
         this.region = region;
         this.company = company;
     }
 
-    public String getBarcode() { return barcode; }
-    public void setBarcode(String barcode) { this.barcode = barcode; }
+    public Long getBarcode() { return barcode; }
+    public void setBarcode(Long barcode) { this.barcode = barcode; }
 
     public String getRegion() { return region; }
     public void setRegion(String region) { this.region = region; }
