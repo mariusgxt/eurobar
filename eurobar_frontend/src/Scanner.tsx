@@ -1,13 +1,15 @@
 import { useRef } from 'react';
 import './App.css'
 import { BrowserMultiFormatReader } from '@zxing/browser';
+import ScannedResult from './ScannedResult';
 
-function App() {
+// Accept a callback prop to send product info up
+function Scanner({ onProductInfo }: { onProductInfo: (info: { countries: string, brands: string, barcode: string }) => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const codeReaderRef = useRef<BrowserMultiFormatReader | null>(null);
 
-  // Helper function to fetch and display product info
-  const fetchAndDisplayProductInfo = async (barcode: string) => {
+  // Helper function to fetch and send product info
+  const fetchAndSendProductInfo = async (barcode: string) => {
     try {
       const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
       const data = await response.json();
@@ -15,19 +17,19 @@ function App() {
         const product = data.product;
         const countries = product.countries || 'Unknown';
         const brands = product.brands || 'Unknown';
-        alert(`Countries: ${countries}\nBrands: ${brands}`);
+        onProductInfo({ countries, brands, barcode });
       } else {
-        alert('Product not found.');
+        onProductInfo({ countries: 'Not found', brands: 'Not found', barcode });
       }
     } catch {
-      alert('Failed to fetch product info.');
+      onProductInfo({ countries: 'Fetch error', brands: 'Fetch error', barcode });
     }
   };
 
   const handleTypeClick = () => {
     const input = window.prompt('Please enter the Barcode:');
     if (input !== null && input.trim() !== '') {
-      fetchAndDisplayProductInfo(input.trim());
+      fetchAndSendProductInfo(input.trim());
     }
   };
 
@@ -38,30 +40,28 @@ function App() {
         videoRef.current.srcObject = stream;
         videoRef.current.play();
 
-        // Initialize the barcode reader
         if (!codeReaderRef.current) {
           codeReaderRef.current = new BrowserMultiFormatReader();
         }
 
-        let scanned = false; // Prevent multiple triggers
+        let scanned = false;
 
         codeReaderRef.current.decodeFromVideoElement(videoRef.current, async (result) => {
           if (result && !scanned) {
             const barcode = result.getText();
             if (barcode && barcode.trim() !== '') {
               scanned = true;
-              // Stop the video stream after successful scan
               stream.getTracks().forEach(track => track.stop());
-              codeReaderRef.current = null; // Clean up the reader
-
-              // Fetch and display product info
-              fetchAndDisplayProductInfo(barcode);
+              codeReaderRef.current = null;
+              fetchAndSendProductInfo(barcode);
+              // After sending product info, open ScannedResult.tsx (parent will handle view switch)
+              // This is handled by the parent via onProductInfo
             }
           }
         });
       }
     } catch {
-      alert('Camera access denied or not available.');
+      onProductInfo({ countries: 'Camera error', brands: 'Camera error', barcode: '' });
     }
   };
 
@@ -80,4 +80,5 @@ function App() {
   )
 }
 
-export default App
+export default Scanner;
+export { ScannedResult };

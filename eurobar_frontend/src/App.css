@@ -40,3 +40,12 @@
 .read-the-docs {
   color: #888;
 }
+
+.result-card {
+  margin: 2rem auto;
+  padding: 2rem;
+  max-width: 400px;
+  background: #0470FE;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #0001;
+}
