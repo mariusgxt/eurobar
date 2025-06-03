@@ -3,14 +3,12 @@ import './App.css'
 import { BrowserMultiFormatReader } from '@zxing/browser';
 import ScannedResult from './ScannedResult';
 
-// Accept a callback prop to send product info up
 function Scanner({ onProductInfo }: { onProductInfo: (info: { countries: string, brands: string, barcode: string }) => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const codeReaderRef = useRef<BrowserMultiFormatReader | null>(null);
   const [barcodeInput, setBarcodeInput] = useState("");
   const [showBarcodeInput, setShowBarcodeInput] = useState(false);
 
-  // Helper function to fetch and send product info
   const fetchAndSendProductInfo = async (barcode: string) => {
     try {
       const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
@@ -29,7 +27,6 @@ function Scanner({ onProductInfo }: { onProductInfo: (info: { countries: string,
   };
 
   const handleTypeClick = () => {
-    // Show a text field for barcode input instead of prompt
     setShowBarcodeInput(true);
   };
 
@@ -63,8 +60,6 @@ function Scanner({ onProductInfo }: { onProductInfo: (info: { countries: string,
               stream.getTracks().forEach(track => track.stop());
               codeReaderRef.current = null;
               fetchAndSendProductInfo(barcode);
-              // After sending product info, open ScannedResult.tsx (parent will handle view switch)
-              // This is handled by the parent via onProductInfo
             }
           }
         });
@@ -81,20 +76,26 @@ function Scanner({ onProductInfo }: { onProductInfo: (info: { countries: string,
         EuroBar
       </h1>
       <button onClick={handleTypeClick}>Click here to type in the Barcode</button>
+      
+      <div className="result-card">
       {showBarcodeInput && (
-        <form onSubmit={handleBarcodeSubmit} style={{ margin: '1rem auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', maxWidth: 300 }}>
+        <form onSubmit={handleBarcodeSubmit} style={{ margin: '1rem auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', maxWidth: 300}}>
           <input
             type="text"
             placeholder="Enter barcode"
             value={barcodeInput}
             onChange={e => setBarcodeInput(e.target.value)}
-            style={{ padding: '0.5rem', fontSize: '1rem', width: '100%' }}
+            style={{ maxWidth: 190, padding: 12, border: 'none', borderRadius: 4, boxShadow: '2px 2px 7px 0 rgb(0,0,0,0.2)', outline: 'none', background: 'white', color: 'dimgray' }}
             autoFocus
           />
+          
+            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
           <button type="submit">Submit</button>
           <button type="button" onClick={() => { setShowBarcodeInput(false); setBarcodeInput(""); }}>Cancel</button>
+          </div>
         </form>
       )}
+      </div>
       <p> </p>
       <button onClick={handleScanClick}>Click here to Scan the Barcode</button>
       <div>

@@ -32,17 +32,31 @@ function ScannedResult({ info }: { info: { countries: string, brands: string, ba
           </button>
         )}
         {showForm && (
-          <form onSubmit={handleSubmit} style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <label>
-              Country:
-              <input value={countryInput} onChange={e => setCountryInput(e.target.value)} required />
+          <form onSubmit={handleSubmit} style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'center' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center', width: '100%' }}>
+              <strong>Countries:</strong>
+              <input
+                className="input"
+                value={countryInput}
+                onChange={e => setCountryInput(e.target.value)}
+                required
+                style={{ maxWidth: 120, padding: 12, border: 'none', borderRadius: 4, boxShadow: '2px 2px 7px 0 rgb(0,0,0,0.2)', outline: 'none', color: 'dimgray', background: 'white' }}
+              />
             </label>
-            <label>
-              Brand:
-              <input value={brandInput} onChange={e => setBrandInput(e.target.value)} required />
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center', width: '100%' }}>
+              <strong>Brands:</strong>
+              <input
+                className="input"
+                value={brandInput}
+                onChange={e => setBrandInput(e.target.value)}
+                required
+                style={{ maxWidth: 120, padding: 12, border: 'none', borderRadius: 4, boxShadow: '2px 2px 7px 0 rgb(0,0,0,0.2)', outline: 'none', color: 'dimgray', background: 'white' }}
+              />
             </label>
-            <button type="submit">Submit</button>
-            <button type="button" onClick={() => setShowForm(false)}>Cancel</button>
+            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
+              <button type="submit">Submit</button>
+              <button type="button" onClick={() => setShowForm(false)}>Cancel</button>
+            </div>
           </form>
         )}
       </div>
