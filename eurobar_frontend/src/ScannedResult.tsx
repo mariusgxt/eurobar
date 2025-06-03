@@ -8,10 +8,26 @@ function ScannedResult({ info }: { info: { countries: string, brands: string, ba
   const [brandInput, setBrandInput] = useState('');
   const isMissing = (info.countries === 'Not found' || info.countries === 'Unknown' || info.brands === 'Not found' || info.brands === 'Unknown');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you could send the data to a backend or show a confirmation
-    alert(`Thank you!\nBarcode: ${info.barcode}\nCountry: ${countryInput}\nBrand: ${brandInput}`);
+    try {
+      const response = await fetch("http://localhost:8080/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({          barcode: Number(info.barcode),
+          region: countryInput,
+          company: brandInput
+        })
+      });
+      if (response.ok) {
+        alert("Thank you! Product added to the database.");
+      } else {
+        const errorText = await response.text();
+        alert("Failed to add product: " + errorText);
+      }
+    } catch (err) {
+      alert("Network error: " + err);
+    }
     setShowForm(false);
   };
 
