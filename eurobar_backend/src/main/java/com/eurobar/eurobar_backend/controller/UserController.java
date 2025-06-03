@@ -66,6 +66,7 @@ public class UserController {
         if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
         }
+        // Store password as plain text
         User savedUser = userRepository.save(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
@@ -77,6 +78,7 @@ public class UserController {
             User user = userOpt.get();
             user.setUsername(userRequest.getUsername());
             user.setEmail(userRequest.getEmail());
+            // Store password as plain text
             user.setPassword(userRequest.getPassword());
             userRepository.save(user);
             return ResponseEntity.ok(user);
@@ -99,7 +101,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User loginRequest) {
         Optional<User> userOpt = userRepository.findByUsername(loginRequest.getUsername());
-        if (userOpt.isPresent() && userOpt.get().getPassword().equals(loginRequest.getPassword())) {
+        if (userOpt.isPresent() && loginRequest.getPassword().equals(userOpt.get().getPassword())) {
             return ResponseEntity.ok("Login successful");
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
@@ -114,6 +116,7 @@ public class UserController {
         if (userRepository.findByEmail(registrationRequest.getEmail()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
         }
+        // Store password as plain text
         User savedUser = userRepository.save(registrationRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
