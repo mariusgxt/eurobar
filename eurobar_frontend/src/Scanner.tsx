@@ -1,13 +1,33 @@
 import { useRef } from 'react';
 import './App.css'
+import { BrowserMultiFormatReader } from '@zxing/browser';
 
 function App() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const codeReaderRef = useRef<BrowserMultiFormatReader | null>(null);
+
+  // Helper function to fetch and display product info
+  const fetchAndDisplayProductInfo = async (barcode: string) => {
+    try {
+      const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
+      const data = await response.json();
+      if (data.status === 1) {
+        const product = data.product;
+        const countries = product.countries || 'Unknown';
+        const brands = product.brands || 'Unknown';
+        alert(`Countries: ${countries}\nBrands: ${brands}`);
+      } else {
+        alert('Product not found.');
+      }
+    } catch {
+      alert('Failed to fetch product info.');
+    }
+  };
 
   const handleTypeClick = () => {
     const input = window.prompt('Please enter the Barcode:');
-    if (input !== null) {
-      console.log('User input:', input);
+    if (input !== null && input.trim() !== '') {
+      fetchAndDisplayProductInfo(input.trim());
     }
   };
 
@@ -17,8 +37,25 @@ function App() {
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         videoRef.current.play();
+
+        // Initialize the barcode reader
+        if (!codeReaderRef.current) {
+          codeReaderRef.current = new BrowserMultiFormatReader();
+        }
+
+        codeReaderRef.current.decodeFromVideoElement(videoRef.current, async (result) => {
+          if (result) {
+            const barcode = result.getText();
+            // Stop the video stream after successful scan
+            stream.getTracks().forEach(track => track.stop());
+            codeReaderRef.current?.reset();
+
+            // Fetch and display product info
+            fetchAndDisplayProductInfo(barcode);
+          }
+        });
       }
-    } catch (err) {
+    } catch {
       alert('Camera access denied or not available.');
     }
   };
