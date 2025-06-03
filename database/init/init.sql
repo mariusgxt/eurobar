@@ -6,7 +6,16 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(100) NOT NULL
 );
 
--- Insert example user
+-- Create product table
+CREATE TABLE IF NOT EXISTS products (
+    barcode BIGINT PRIMARY KEY,
+    region VARCHAR(50) NOT NULL,
+    company VARCHAR(100) NOT NULL
+);
+
+-- Insert example user and product
 INSERT INTO users (username, password, email) VALUES
 ('admin', 'admin123', 'admin@example.com'),
 ('testuser', 'test123', 'test@example.com');
+
+INSERT INTO products (barcode, region, company) VALUES (4005906005377, 'Frankreich', 'Adelholzener');

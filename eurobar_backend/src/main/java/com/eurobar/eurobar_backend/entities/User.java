@@ -1,9 +1,14 @@
 package com.eurobar.eurobar_backend.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "users")  // Optional: ensures table name is 'users'
+@Table(name = "users") 
 public class User {
 
     @Id
@@ -19,7 +24,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    // Constructors
     public User() {}
 
     public User(String username, String password, String email) {
@@ -27,8 +31,6 @@ public class User {
         this.password = password;
         this.email = email;
     }
-
-    // Getters and setters
 
     public Long getId() { return id; }
 
