@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,8 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
     
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     @GetMapping("")
     public ResponseEntity<?> getAllUsers(
         @RequestParam(name = "username", required = false) String username,
@@ -66,6 +69,8 @@ public class UserController {
         if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
         }
+        // Hash the password before saving
+        userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         User savedUser = userRepository.save(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
@@ -77,7 +82,8 @@ public class UserController {
             User user = userOpt.get();
             user.setUsername(userRequest.getUsername());
             user.setEmail(userRequest.getEmail());
-            user.setPassword(userRequest.getPassword());
+            // Hash the password before saving
+            user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
             userRepository.save(user);
             return ResponseEntity.ok(user);
         } else {
@@ -99,7 +105,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User loginRequest) {
         Optional<User> userOpt = userRepository.findByUsername(loginRequest.getUsername());
-        if (userOpt.isPresent() && userOpt.get().getPassword().equals(loginRequest.getPassword())) {
+        if (userOpt.isPresent() && passwordEncoder.matches(loginRequest.getPassword(), userOpt.get().getPassword())) {
             return ResponseEntity.ok("Login successful");
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
@@ -114,6 +120,8 @@ public class UserController {
         if (userRepository.findByEmail(registrationRequest.getEmail()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
         }
+        // Hash the password before saving
+        registrationRequest.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
         User savedUser = userRepository.save(registrationRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
