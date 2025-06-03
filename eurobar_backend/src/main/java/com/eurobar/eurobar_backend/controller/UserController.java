@@ -1,5 +1,7 @@
 package com.eurobar.eurobar_backend.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,39 +29,92 @@ public class UserController {
     public ResponseEntity<?> getAllUsers(
         @RequestParam(name = "username", required = false) String username,
         @RequestParam(name = "email", required = false) String email){
-        return ResponseEntity.ok("Retrieved users with filters: username=" + 
-            username + ", email=" + email);
+        if (username != null) {
+            Optional<User> userOpt = userRepository.findByUsername(username);
+            if (userOpt.isPresent()) {
+                return ResponseEntity.ok(userOpt.get());
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+        } else if (email != null) {
+            Optional<User> userOpt = userRepository.findByEmail(email);
+            if (userOpt.isPresent()) {
+                return ResponseEntity.ok(userOpt.get());
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+        } else {
+            return ResponseEntity.ok(userRepository.findAll());
+        }
     }
     
     @GetMapping("/{userId}")
     public ResponseEntity<?> getUserById(@PathVariable(name = "userId") Long userId) {
-        return ResponseEntity.ok("Retrieved user with ID: " + userId);
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isPresent()) {
+            return ResponseEntity.ok(userOpt.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
     }
-
 
     @PostMapping("")
     public ResponseEntity<?> createUser(@RequestBody User userRequest) {
+        if (userRepository.findByUsername(userRequest.getUsername()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
+        }
+        if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
+        }
         User savedUser = userRepository.save(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
     
     @PutMapping("/{userId}")
-    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody Object userRequest) {
-        return ResponseEntity.ok("Updated user with ID: " + userId);
+    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User userRequest) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            user.setUsername(userRequest.getUsername());
+            user.setEmail(userRequest.getEmail());
+            user.setPassword(userRequest.getPassword());
+            userRepository.save(user);
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
     }
     
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
-        return ResponseEntity.ok("Deleted user with ID: " + userId);
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isPresent()) {
+            userRepository.delete(userOpt.get());
+            return ResponseEntity.ok("User deleted successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
     }
     
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Object loginRequest) {
-        return ResponseEntity.ok("User logged in successfully");
+    public ResponseEntity<?> login(@RequestBody User loginRequest) {
+        Optional<User> userOpt = userRepository.findByUsername(loginRequest.getUsername());
+        if (userOpt.isPresent() && userOpt.get().getPassword().equals(loginRequest.getPassword())) {
+            return ResponseEntity.ok("Login successful");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
     }
     
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Object registrationRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
+    public ResponseEntity<?> register(@RequestBody User registrationRequest) {
+        if (userRepository.findByUsername(registrationRequest.getUsername()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
+        }
+        if (userRepository.findByEmail(registrationRequest.getEmail()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
+        }
+        User savedUser = userRepository.save(registrationRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 }
