@@ -43,15 +43,20 @@ function App() {
           codeReaderRef.current = new BrowserMultiFormatReader();
         }
 
-        codeReaderRef.current.decodeFromVideoElement(videoRef.current, async (result) => {
-          if (result) {
-            const barcode = result.getText();
-            // Stop the video stream after successful scan
-            stream.getTracks().forEach(track => track.stop());
-            codeReaderRef.current?.reset();
+        let scanned = false; // Prevent multiple triggers
 
-            // Fetch and display product info
-            fetchAndDisplayProductInfo(barcode);
+        codeReaderRef.current.decodeFromVideoElement(videoRef.current, async (result) => {
+          if (result && !scanned) {
+            const barcode = result.getText();
+            if (barcode && barcode.trim() !== '') {
+              scanned = true;
+              // Stop the video stream after successful scan
+              stream.getTracks().forEach(track => track.stop());
+              codeReaderRef.current = null; // Clean up the reader
+
+              // Fetch and display product info
+              fetchAndDisplayProductInfo(barcode);
+            }
           }
         });
       }
