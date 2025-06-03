@@ -14,7 +14,8 @@ function ScannedResult({ info }: { info: { countries: string, brands: string, ba
       const response = await fetch("http://localhost:8080/api/products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({          barcode: Number(info.barcode),
+        body: JSON.stringify({
+          barcode: info.barcode,
           region: countryInput,
           company: brandInput
         })

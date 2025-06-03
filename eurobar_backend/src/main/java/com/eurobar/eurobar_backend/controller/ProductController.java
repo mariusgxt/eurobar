@@ -31,7 +31,7 @@ public class ProductController {
     }
 
     @GetMapping("/{barcode}")
-    public ResponseEntity<?> getProductByBarcode(@PathVariable Long barcode) {
+    public ResponseEntity<?> getProductByBarcode(@PathVariable String barcode) {
         Optional<Product> productOpt = productRepository.findByBarcode(barcode);
         if (productOpt.isPresent()) {
             return ResponseEntity.ok(productOpt.get());
@@ -50,7 +50,7 @@ public class ProductController {
     }
 
     @PutMapping("/{barcode}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long barcode, @RequestBody Product productRequest) {
+    public ResponseEntity<?> updateProduct(@PathVariable String barcode, @RequestBody Product productRequest) {
         Optional<Product> productOpt = productRepository.findByBarcode(barcode);
         if (productOpt.isPresent()) {
             Product product = productOpt.get();
@@ -64,7 +64,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{barcode}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long barcode) {
+    public ResponseEntity<?> deleteProduct(@PathVariable String barcode) {
         Optional<Product> productOpt = productRepository.findByBarcode(barcode);
         if (productOpt.isPresent()) {
             productRepository.delete(productOpt.get());

@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 public class Product {
     @Id
     @Column(nullable = false, unique = true)
-    private Long barcode;
+    private String barcode;
 
     @Column(nullable = false)
     private String region;
@@ -20,14 +20,14 @@ public class Product {
 
     public Product() {}
 
-    public Product(Long barcode, String region, String company) {
+    public Product(String barcode, String region, String company) {
         this.barcode = barcode;
         this.region = region;
         this.company = company;
     }
 
-    public Long getBarcode() { return barcode; }
-    public void setBarcode(Long barcode) { this.barcode = barcode; }
+    public String getBarcode() { return barcode; }
+    public void setBarcode(String barcode) { this.barcode = barcode; }
 
     public String getRegion() { return region; }
     public void setRegion(String region) { this.region = region; }

@@ -19,7 +19,22 @@ function Scanner({ onProductInfo }: { onProductInfo: (info: { countries: string,
         const brands = product.brands || 'Unknown';
         onProductInfo({ countries, brands, barcode });
       } else {
-        onProductInfo({ countries: 'Not found', brands: 'Not found', barcode });
+        try {
+          const localRes = await fetch(`http://localhost:8080/api/products`);
+          if (localRes.ok) {
+            const products = await localRes.json();
+            const localProduct = products.find((p: any) => p.barcode === barcode);
+            if (localProduct) {
+              onProductInfo({ countries: localProduct.region || 'Unknown', brands: localProduct.company || 'Unknown', barcode });
+            } else {
+              onProductInfo({ countries: 'Not found', brands: 'Not found', barcode });
+            }
+          } else {
+            onProductInfo({ countries: 'Not found', brands: 'Not found', barcode });
+          }
+        } catch {
+          onProductInfo({ countries: 'Not found', brands: 'Not found', barcode });
+        }
       }
     } catch {
       onProductInfo({ countries: 'Fetch error', brands: 'Fetch error', barcode });
