@@ -4,13 +4,20 @@ import Scanner from './Scanner';
 
 function App() {
   const [showScanner, setShowScanner] = useState(false);
+  const [result, setResult] = useState<{ countries: string, brands: string, barcode: string } | null>(null);
 
   const handleClick = () => {
     setShowScanner(true);
+    setResult(null);
+  };
+
+  const handleProductInfo = (info: { countries: string, brands: string, barcode: string }) => {
+    setResult(info);
+    setShowScanner(false);
   };
 
   if (showScanner) {
-    return <Scanner />;
+    return <Scanner onProductInfo={handleProductInfo} />;
   }
 
   return (
@@ -19,10 +26,16 @@ function App() {
       <h1>
         Eurobar
       </h1>
-      <button onClick={handleClick}>Click here to start</button>
-      <p className="read-the-docs">
-        Not official
-      </p>
+      {result && (
+        <div className="result-card">
+          <h2>Scan Result</h2>
+          <p><strong>Barcode:</strong> {result.barcode}</p>
+          <p><strong>Countries:</strong> {result.countries}</p>
+          <p><strong>Brands:</strong> {result.brands}</p>
+        </div>
+      )}
+      
+      <button onClick={handleClick}>Click here to Scan again</button>
     </>
   )
 }

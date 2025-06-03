@@ -1,16 +1,27 @@
-import './App.css'
+import './App.css';
 import { useState } from 'react';
 import Scanner from './Scanner';
+import ScannedResult from './ScannedResult';
 
 function App() {
   const [showScanner, setShowScanner] = useState(false);
+  const [productInfo, setProductInfo] = useState(null);
 
   const handleClick = () => {
     setShowScanner(true);
   };
 
+  const handleProductInfo = (info) => {
+    setProductInfo(info);
+    setShowScanner(false);
+  };
+
   if (showScanner) {
-    return <Scanner />;
+    return <Scanner onProductInfo={handleProductInfo} />;
+  }
+
+  if (productInfo) {
+    return <ScannedResult info={productInfo} />;
   }
 
   return (
@@ -24,7 +35,7 @@ function App() {
         Not official
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
