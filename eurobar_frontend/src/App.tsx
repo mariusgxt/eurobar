@@ -38,7 +38,6 @@ function App() {
       </h1>
       <button onClick={handleClick}>Click here to start</button>
       <p className="read-the-docs">
-        Not official
       </p>
     </>
   );
