@@ -76,26 +76,24 @@ function Scanner({ onProductInfo }: { onProductInfo: (info: { countries: string,
         EuroBar
       </h1>
       <button onClick={handleTypeClick}>Click here to type in the Barcode</button>
-      
-      <div className="result-card">
       {showBarcodeInput && (
-        <form onSubmit={handleBarcodeSubmit} style={{ margin: '1rem auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', maxWidth: 300}}>
-          <input
-            type="text"
-            placeholder="Enter barcode"
-            value={barcodeInput}
-            onChange={e => setBarcodeInput(e.target.value)}
-            style={{ maxWidth: 190, padding: 12, border: 'none', borderRadius: 4, boxShadow: '2px 2px 7px 0 rgb(0,0,0,0.2)', outline: 'none', background: 'white', color: 'dimgray' }}
-            autoFocus
-          />
-          
+        <div className="result-card">
+          <form onSubmit={handleBarcodeSubmit} style={{ margin: '1rem auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', maxWidth: 300}}>
+            <input
+              type="text"
+              placeholder="Enter barcode"
+              value={barcodeInput}
+              onChange={e => setBarcodeInput(e.target.value)}
+              style={{ maxWidth: 190, padding: 12, border: 'none', borderRadius: 4, boxShadow: '2px 2px 7px 0 rgb(0,0,0,0.2)', outline: 'none', background: 'white', color: 'dimgray' }}
+              autoFocus
+            />
             <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
-          <button type="submit">Submit</button>
-          <button type="button" onClick={() => { setShowBarcodeInput(false); setBarcodeInput(""); }}>Cancel</button>
-          </div>
-        </form>
+              <button type="submit">Submit</button>
+              <button type="button" onClick={() => { setShowBarcodeInput(false); setBarcodeInput(""); }}>Cancel</button>
+            </div>
+          </form>
+        </div>
       )}
-      </div>
       <p> </p>
       <button onClick={handleScanClick}>Click here to Scan the Barcode</button>
       <div>
