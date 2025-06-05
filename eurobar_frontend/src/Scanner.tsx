@@ -11,32 +11,29 @@ function Scanner({ onProductInfo }: { onProductInfo: (info: { countries: string,
 
   const fetchAndSendProductInfo = async (barcode: string) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/products/external/${barcode}.json`);
-      const data = await response.json();
-      if (data.status === 1) {
-        const product = data.product;
-        const countries = product.countries || 'Unknown';
-        const brands = product.brands || 'Unknown';
-        onProductInfo({ countries, brands, barcode });
+      // Add timeout to prevent hanging requests
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
+      const response = await fetch(`http://localhost:8080/api/products/lookup/${barcode}`, {
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (response.ok) {
+        const product = await response.json();
+        onProductInfo({ 
+          countries: product.region || 'Unknown', 
+          brands: product.company || 'Unknown', 
+          barcode 
+        });
       } else {
-        try {
-          const localRes = await fetch(`http://localhost:8080/api/products`);
-          if (localRes.ok) {
-            const products = await localRes.json();
-            const localProduct = products.find((p: any) => p.barcode === barcode);
-            if (localProduct) {
-              onProductInfo({ countries: localProduct.region || 'Unknown', brands: localProduct.company || 'Unknown', barcode });
-            } else {
-              onProductInfo({ countries: 'Not found', brands: 'Not found', barcode });
-            }
-          } else {
-            onProductInfo({ countries: 'Not found', brands: 'Not found', barcode });
-          }
-        } catch {
-          onProductInfo({ countries: 'Not found', brands: 'Not found', barcode });
-        }
+        console.error('Response not ok:', response.status, response.statusText);
+        onProductInfo({ countries: 'Not found', brands: 'Not found', barcode });
       }
-    } catch {
+    } catch (error) {
+      console.error('Fetch error:', error);
       onProductInfo({ countries: 'Fetch error', brands: 'Fetch error', barcode });
     }
   };

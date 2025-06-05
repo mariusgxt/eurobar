@@ -1,6 +1,7 @@
 package com.eurobar.eurobar_backend.controller;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +20,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.eurobar.eurobar_backend.entities.Product;
 import com.eurobar.eurobar_backend.repositories.ProductRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @RestController
@@ -82,9 +86,9 @@ public class ProductController {
     @GetMapping("/external/{barcode}")
     public ResponseEntity<?> getFromFoodApi(@PathVariable("barcode") String barcode) {
         try{
-        String uri = OpenfoodsURI.concat(barcode);
-        RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(uri, String.class);
+            String uri = OpenfoodsURI.concat(barcode);
+            RestTemplate restTemplate = new RestTemplate();
+            String result = restTemplate.getForObject(uri, String.class);
         
         if(result != null){
             return ResponseEntity.ok(result);
@@ -97,4 +101,49 @@ public class ProductController {
             .body("Error fetching data from external Api " + e.getMessage());
         } 
     }
+
+    @GetMapping("/lookup/{barcode}")
+    public ResponseEntity<?> lookupProduct(@PathVariable("barcode") String barcode) {
+        //Local check
+        Optional<Product> localProduct = productRepository.findByBarcode(barcode);
+        if(localProduct.isPresent()){
+            return ResponseEntity.ok(localProduct.get());
+        }
+
+        try {
+            String uri = OpenfoodsURI.concat(barcode);
+            RestTemplate restTemplate = new RestTemplate();
+            String result = restTemplate.getForObject(uri, String.class);
+        
+            if(result != null){
+                ObjectMapper objectMapper = new ObjectMapper();
+                
+                JsonNode jsonNode = objectMapper.readTree(result);
+                
+                String region = jsonNode.path("product").path("countries").asText();
+                String brand = jsonNode.path("product").path("brands").asText();
+
+                if(region.isEmpty()){
+                    region = "Country not found";
+                }
+
+                if(brand.isEmpty()){
+                    brand = "Brand not found";
+                }
+
+                Product foundProduct = new Product(barcode, region, brand);
+                CompletableFuture.runAsync(() -> {
+                    productRepository.save(foundProduct);
+                });
+                return ResponseEntity.ok(foundProduct);
+            }else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found in external API");
+            }
+            
+        } catch (RestClientException | JsonProcessingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("Error fetching data from external Api " + e.getMessage());
+        }
+    }
+    
 }
