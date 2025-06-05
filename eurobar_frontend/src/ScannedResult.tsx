@@ -1,7 +1,6 @@
 import './App.css';
 import { useState } from 'react';
 
-// Only one component: ScannedResult, which takes info as prop
 function ScannedResult({ info }: { info: { countries: string, brands: string, barcode: string } }) {
   const [showForm, setShowForm] = useState(false);
   const [countryInput, setCountryInput] = useState('');
