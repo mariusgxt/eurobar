@@ -3,6 +3,7 @@ package com.eurobar.eurobar_backend.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,16 +13,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 import com.eurobar.eurobar_backend.entities.Product;
 import com.eurobar.eurobar_backend.repositories.ProductRepository;
+
 
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
     @Autowired
     private ProductRepository productRepository;
+
+    @Value("${external.openfoods}")
+    String OpenfoodsURI;
 
     @GetMapping("")
     public ResponseEntity<?> getAllProducts() {
@@ -70,5 +78,24 @@ public class ProductController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
         }
+    }
+
+    @GetMapping("/external")
+    public ResponseEntity<?> getFromFoodApi(@RequestParam("barcode") String barcode) {
+        try{
+        String uri = OpenfoodsURI.concat(barcode);
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(uri, String.class);
+        
+        if(result != null){
+            return ResponseEntity.ok(result);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found in external API");
+        }
+
+        } catch (RestClientException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("Error fetching data from external Api " + e.getMessage());
+        } 
     }
 }

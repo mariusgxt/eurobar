@@ -2,4 +2,8 @@
   "name": "cors.allowed-origins",
   "type": "java.lang.String",
   "description": "The string that contains the allowed domains that can access the backend."
+}, {
+  "name": "external.openfoods",
+  "type": "java.lang.String",
+  "description":"The openfoods api."
 }]}
