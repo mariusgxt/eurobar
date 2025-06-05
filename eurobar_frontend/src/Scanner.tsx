@@ -11,7 +11,7 @@ function Scanner({ onProductInfo }: { onProductInfo: (info: { countries: string,
 
   const fetchAndSendProductInfo = async (barcode: string) => {
     try {
-      const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
+      const response = await fetch(`http://localhost:8080/api/products/external/${barcode}.json`);
       const data = await response.json();
       if (data.status === 1) {
         const product = data.product;
