@@ -1,5 +1,7 @@
 package com.eurobar.eurobar_backend.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -120,7 +122,27 @@ public class ProductController {
                 
                 JsonNode jsonNode = objectMapper.readTree(result);
                 
-                String region = jsonNode.path("product").path("countries").asText();
+                // Use countries_hierarchy instead of countries
+                JsonNode countriesHierarchy = jsonNode.path("product").path("countries_hierarchy");
+                String region = "";
+
+                if (countriesHierarchy.isArray() && countriesHierarchy.size() > 0) {
+                    // Extract country codes from hierarchy (e.g., "en:germany" -> "germany")
+                    List<String> countries = new ArrayList<>();
+                    for (JsonNode countryNode : countriesHierarchy) {
+                        String countryCode = countryNode.asText();
+                        if (countryCode.startsWith("en:")) {
+                            // Remove "en:" prefix and capitalize first letter
+                            String countryName = countryCode.substring(3);
+                            countryName = countryName.substring(0, 1).toUpperCase() + countryName.substring(1);
+                            countries.add(countryName);
+                        }
+                    }
+                    region = String.join(", ", countries);
+                } else {
+                    region = "Country not found";
+                }
+
                 String brand = jsonNode.path("product").path("brands").asText();
 
                 if(region.isEmpty()){

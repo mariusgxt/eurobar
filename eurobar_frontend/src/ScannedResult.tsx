@@ -316,9 +316,9 @@ function ScannedResult({ info }: { info: { countries: string, brands: string, ba
         <p><strong>Barcode:</strong> {info.barcode}</p>
         <p><strong>Countries: </strong> {
           info.countries.split(',').map((country, idx) => (
-            <span key={country.trim()} style={{ display: 'inline-flex', alignItems: 'center', marginRight: 8, marginBottom: 4 }}>
+            <span key={`${country.trim()}-${idx}`} style={{ display: 'inline-flex', alignItems: 'center', marginRight: 8, marginBottom: 4 }}>
               {country.trim()}
-              {getCountryFlag(country)}
+              {getCountryFlag(country.trim())}
               {idx < info.countries.split(',').length - 1 && <span style={{ margin: '0 4px' }}>|</span>}
             </span>
           ))
