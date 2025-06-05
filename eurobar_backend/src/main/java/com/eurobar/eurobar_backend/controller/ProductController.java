@@ -26,6 +26,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 
 @RestController
 @RequestMapping("/api/products")
@@ -36,11 +40,33 @@ public class ProductController {
     @Value("${external.openfoods}")
     String OpenfoodsURI;
 
+    @Operation(
+        summary="Gets all products",
+        description="Gets all products in the database.",
+        tags="Product",
+        responses={
+            @ApiResponse(responseCode="200", description="Found All Products."),
+            @ApiResponse(responseCode="204", description="No product in database.")
+        })
     @GetMapping("")
     public ResponseEntity<?> getAllProducts() {
+        if(productRepository.findAll() != null){
         return ResponseEntity.ok(productRepository.findAll());
+        }else{
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No Entries in the database to display.");
+        }
     }
 
+    @Operation(
+        summary = "Get a barcode.",
+        description = "Gets a single product matching the barcode.",
+        tags = "Product",
+        parameters = {
+            @Parameter(name = "barcode", description = "Search for a product by its barcode.")
+        },
+        responses = {
+            @ApiResponse(responseCode="200", description="Found Product.")
+        })
     @GetMapping("/{barcode}")
     public ResponseEntity<?> getProductByBarcode(@PathVariable("barcode") String barcode) {
         Optional<Product> productOpt = productRepository.findByBarcode(barcode);
@@ -51,6 +77,17 @@ public class ProductController {
         }
     }
 
+    @Operation(
+        summary="Creates a new product",
+        description="Creates a new product in the database using the parameters.",
+        tags="Product",
+        parameters = {
+            @Parameter(name = "Product Request", description = "A product object in the request body.")
+        },
+        responses = {
+            @ApiResponse(responseCode="200", description="The product has been created."),
+            @ApiResponse(responseCode="409", description="The product with the entered barcode already exists in the database.")
+        })
     @PostMapping("")
     public ResponseEntity<?> createProduct(@RequestBody Product productRequest) {
         if (productRequest.getBarcode() != null && productRepository.findByBarcode(productRequest.getBarcode()).isPresent()) {
@@ -60,6 +97,19 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
 
+    @Operation (
+        summary="Updates a product.",
+        description="Updates the product matching the barcode entered and overrides it with the entered request body.",
+        tags="Product",
+        parameters = {
+            @Parameter(name="barcode", description="The barcode of the product that should be updated."),
+            @Parameter(name="request body", description="The request body containing the new product.")
+        },
+        responses= {
+            @ApiResponse(responseCode="200", description="The product has been updated."),
+            @ApiResponse(responseCode="404", description="The product matching the barcode has not been found.")
+
+        })
     @PutMapping("/{barcode}")
     public ResponseEntity<?> updateProduct(@PathVariable("barcode") String barcode, @RequestBody Product productRequest) {
         Optional<Product> productOpt = productRepository.findByBarcode(barcode);
@@ -74,6 +124,17 @@ public class ProductController {
         }
     }
 
+    @Operation (
+        summary = "Deletes a product.",
+        description = "Deletes the product matching the barcode from the database.",
+        tags = "Product",
+        parameters = {
+            @Parameter(name="barcode", description="The barcode of the product that should be deleted.")
+        },
+        responses = {
+            @ApiResponse(responseCode="200", description="The product has been deleted."),
+            @ApiResponse(responseCode="404", description="The product matching the barcode has not been found.")
+        })    
     @DeleteMapping("/{barcode}")
     public ResponseEntity<?> deleteProduct(@PathVariable("barcode") String barcode) {
         Optional<Product> productOpt = productRepository.findByBarcode(barcode);
@@ -85,25 +146,18 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/external/{barcode}")
-    public ResponseEntity<?> getFromFoodApi(@PathVariable("barcode") String barcode) {
-        try{
-            String uri = OpenfoodsURI.concat(barcode);
-            RestTemplate restTemplate = new RestTemplate();
-            String result = restTemplate.getForObject(uri, String.class);
-        
-        if(result != null){
-            return ResponseEntity.ok(result);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found in external API");
-        }
-
-        } catch (RestClientException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body("Error fetching data from external Api " + e.getMessage());
-        } 
-    }
-
+    @Operation (
+        summary = "Gets the country and brand of a product given its barcode.",
+        description = "Fetches the information of a product by sending its barcode to the OpenFood-Api and organizes the results into a cleaned up list of the countries and brands.",
+        tags = "External",
+        parameters = {
+            @Parameter(name="barcode", description="The barcode of the product that needs to be searched.")
+        },
+        responses = {
+            @ApiResponse(responseCode="200", description="The product and its information has been found."),
+            @ApiResponse(responseCode="404", description="The product has not been found in the Open Food Database."),
+            @ApiResponse(responseCode="500", description="Error fetching data from external Api.")
+        })
     @GetMapping("/lookup/{barcode}")
     public ResponseEntity<?> lookupProduct(@PathVariable("barcode") String barcode) {
         //Local check
@@ -124,7 +178,7 @@ public class ProductController {
                 
                 // Use countries_hierarchy instead of countries
                 JsonNode countriesHierarchy = jsonNode.path("product").path("countries_hierarchy");
-                String region = "";
+                String region;
 
                 if (countriesHierarchy.isArray() && countriesHierarchy.size() > 0) {
                     // Extract country codes from hierarchy (e.g., "en:germany" -> "germany")
