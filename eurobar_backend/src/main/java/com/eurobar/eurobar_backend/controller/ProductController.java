@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eurobar.eurobar_backend.entities.Product;
 import com.eurobar.eurobar_backend.repositories.ProductRepository;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
@@ -31,7 +29,7 @@ public class ProductController {
     }
 
     @GetMapping("/{barcode}")
-    public ResponseEntity<?> getProductByBarcode(@PathVariable String barcode) {
+    public ResponseEntity<?> getProductByBarcode(@PathVariable("barcode") String barcode) {
         Optional<Product> productOpt = productRepository.findByBarcode(barcode);
         if (productOpt.isPresent()) {
             return ResponseEntity.ok(productOpt.get());
