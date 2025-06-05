@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -56,7 +55,7 @@ public class ProductController {
     }
 
     @PutMapping("/{barcode}")
-    public ResponseEntity<?> updateProduct(@PathVariable String barcode, @RequestBody Product productRequest) {
+    public ResponseEntity<?> updateProduct(@PathVariable("barcode") String barcode, @RequestBody Product productRequest) {
         Optional<Product> productOpt = productRepository.findByBarcode(barcode);
         if (productOpt.isPresent()) {
             Product product = productOpt.get();
@@ -70,7 +69,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{barcode}")
-    public ResponseEntity<?> deleteProduct(@PathVariable String barcode) {
+    public ResponseEntity<?> deleteProduct(@PathVariable("barcode") String barcode) {
         Optional<Product> productOpt = productRepository.findByBarcode(barcode);
         if (productOpt.isPresent()) {
             productRepository.delete(productOpt.get());
@@ -80,8 +79,8 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/external")
-    public ResponseEntity<?> getFromFoodApi(@RequestParam("barcode") String barcode) {
+    @GetMapping("/external/{barcode}")
+    public ResponseEntity<?> getFromFoodApi(@PathVariable("barcode") String barcode) {
         try{
         String uri = OpenfoodsURI.concat(barcode);
         RestTemplate restTemplate = new RestTemplate();
