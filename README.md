@@ -51,7 +51,3 @@ Eurobar is a web app for scanning products to get their origin. It consists of a
 - The backend connects to the PostgreSQL database started via Docker Compose.
 - The frontend expects the backend to be running on port 8080.
 - You can configure CORS and other settings in the backend's `application.properties`.
-
----
-
-Feel free to update this README with more details as your project evolves.
