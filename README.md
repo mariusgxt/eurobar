@@ -1,21 +1,57 @@
-# React + TypeScript + Vite
+# Eurobar
 
-This is Eurobar a webapp for scanning products to get their origin.
+Eurobar is a web app for scanning products to get their origin. It consists of a React + TypeScript + Vite frontend and a Spring Boot backend, with a PostgreSQL database running in Docker.
 
-## Starting the database
+## Prerequisites
+- Docker Desktop (for the database)
+- Node.js (for the frontend)
+- Java 17+ (for the backend)
 
-To initiate the database make sure you have docker desktop installed and are in the database folder with your terminal.
+## Starting the Database
+1. Open a terminal and navigate to the `database` folder:
+   ```powershell
+   cd database
+   ```
+2. Start the database with Docker Compose:
+   ```powershell
+   docker compose up -d
+   ```
 
-Then run the following command:
+## Starting the Backend (Spring Boot)
+1. Open a terminal and navigate to the `eurobar_backend` folder:
+   ```powershell
+   cd eurobar_backend
+   ```
+2. Build and start the backend:
+   ```powershell
+   .\gradlew bootRun
+   ```
+   The backend will run on [http://localhost:8080](http://localhost:8080).
 
-```cmd
-docker compose up -d
-```
+## Starting the Frontend (Vite + React)
+1. Open a terminal and navigate to the `eurobar_frontend` folder:
+   ```powershell
+   cd eurobar_frontend
+   ```
+2. Install dependencies (first time only):
+   ```powershell
+   npm install
+   ```
+3. Start the frontend development server:
+   ```powershell
+   npm run dev
+   ```
+   The frontend will run on [http://localhost:5173](http://localhost:5173).
 
-## Starting the node server
+## Usage
+- Open [http://localhost:5173](http://localhost:5173) in your browser.
+- Scan a product barcode to see its origin and brand information.
 
-To run the node server you have to be in the eurobar_frontend folder with your terminal and run the following command:
+## Notes
+- The backend connects to the PostgreSQL database started via Docker Compose.
+- The frontend expects the backend to be running on port 8080.
+- You can configure CORS and other settings in the backend's `application.properties`.
 
-```cmd
-node run dev
-```
+---
+
+Feel free to update this README with more details as your project evolves.
