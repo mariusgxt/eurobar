@@ -32,7 +32,6 @@ function ScannedResult({ info }: { info: { countries: string, brands: string, ba
     setShowForm(false);
   };
 
-  // Add a mapping from country names to ISO 3166-1 alpha-2 codes
   const countryNameToCode: Record<string, string> = {
     'Afghanistan': 'AF',
     'Albania': 'AL',
@@ -226,7 +225,7 @@ function ScannedResult({ info }: { info: { countries: string, brands: string, ba
     'Yemen': 'YE',
     'Zambia': 'ZM',
     'Zimbabwe': 'ZW',
-    // French/other variants for Open Food Facts
+    // French variants for Open Food Facts
     'Albanie': 'AL',
     'Australie': 'AU',
     'Bulgarie': 'BG',
@@ -237,10 +236,8 @@ function ScannedResult({ info }: { info: { countries: string, brands: string, ba
     'Tunisie': 'TN',
     'Royaume-Uni': 'GB',
     'États-Unis': 'US',
-    // Add more as needed
   };
 
-  // Add a mapping from brand names to their domains
   const brandNameToDomain: Record<string, string> = {
     'Coca-Cola': 'coca-cola.com',
     'Pepsi': 'pepsi.com',
@@ -250,12 +247,10 @@ function ScannedResult({ info }: { info: { countries: string, brands: string, ba
     'Danone': 'danone.com',
     'Ferrero': 'ferrero.com',
     'Red Bull': 'redbull.com',
-    // Add more as needed
   };
 
   function getCountryFlag(country: string) {
     const trimmed = country.trim();
-    // If already a 2-letter code, use it directly (case-insensitive)
     if (/^[A-Za-z]{2}$/.test(trimmed)) {
       const upper = trimmed.toUpperCase();
       return (
@@ -268,7 +263,6 @@ function ScannedResult({ info }: { info: { countries: string, brands: string, ba
         />
       );
     }
-    // Otherwise, try to map from name
     const code = countryNameToCode[trimmed];
     if (!code) return null;
     return (
@@ -284,7 +278,6 @@ function ScannedResult({ info }: { info: { countries: string, brands: string, ba
 
   function getBrandLogo(brand: string) {
     const trimmed = brand.trim();
-    // Don't render logo for unknown, X, or similar error values
     if (!brand || failedBrandLogos[trimmed] || /^(unknown|not found|x)$/i.test(trimmed)) return null;
     let domain = brandNameToDomain[trimmed];
     if (!domain) {

@@ -11,9 +11,8 @@ function Scanner({ onProductInfo }: { onProductInfo: (info: { countries: string,
 
   const fetchAndSendProductInfo = async (barcode: string) => {
     try {
-      // Add timeout to prevent hanging requests
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
       
       const response = await fetch(`http://localhost:8080/api/products/lookup/${barcode}`, {
         signal: controller.signal
