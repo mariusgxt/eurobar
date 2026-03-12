@@ -1,0 +1,35 @@
+{
+  "app": {
+    "title": "EuroBar",
+    "subtitle": "Scan products to discover their origin"
+  },
+  "home": {
+    "startButton": "Start Scanning"
+  },
+  "scanner": {
+    "typeBarcode": "Enter Barcode Manually",
+    "scanBarcode": "Scan with Camera",
+    "placeholder": "Enter barcode",
+    "submit": "Submit",
+    "cancel": "Cancel"
+  },
+  "result": {
+    "heading": "Scan Result",
+    "barcode": "Barcode",
+    "countries": "Countries",
+    "brands": "Brands",
+    "addMissing": "Add missing information",
+    "scanAgain": "Scan Again",
+    "thankYou": "Thank you! Product added to the database.",
+    "addFailed": "Failed to add product: {{error}}",
+    "networkError": "Network error: {{error}}",
+    "notFound": "Not found",
+    "unknown": "Unknown",
+    "fetchError": "Fetch error",
+    "cameraError": "Camera error"
+  },
+  "language": {
+    "en": "English",
+    "de": "Deutsch"
+  }
+}

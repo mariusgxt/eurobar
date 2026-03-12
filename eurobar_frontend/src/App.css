@@ -1,75 +1,220 @@
+/* ── Layout ───────────────────────────────────── */
 #root {
-  max-width: 1280px;
+  width: 100%;
+  max-width: 480px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 1rem 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* ── Header ──────────────────────────────────── */
+.app-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.app-logo {
+  width: 88px;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  margin-bottom: 0.75rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.app-subtitle {
+  font-size: 0.95rem;
+  opacity: 0.75;
+  margin-top: -0.25rem;
+  margin-bottom: 1rem;
 }
 
-.card {
-  padding: 2em;
+/* ── Language Switcher ───────────────────────── */
+.lang-switcher {
+  align-self: flex-end;
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
 }
 
-.read-the-docs {
-  color: #888;
+.lang-btn {
+  font-size: 1.25rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: none;
+  color: #fff;
+  line-height: 1;
+  opacity: 0.6;
+  transition: opacity 0.2s, background 0.2s;
 }
 
+.lang-btn.active,
+.lang-btn:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ── Result Card ─────────────────────────────── */
 .result-card {
-  margin: 2rem auto;
-  padding: 2rem;
-  max-width: 400px;
-  background: #0470FE;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px #0001;
+  width: 100%;
+  margin: 1rem 0;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
 }
 
+.result-card h2 {
+  margin-bottom: 0.75rem;
+}
+
+/* ── Result Rows ─────────────────────────────── */
+.result-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.result-row strong {
+  margin-right: 0.25rem;
+}
+
+.country-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.country-flag,
+.brand-logo {
+  width: 24px;
+  height: 18px;
+  border-radius: 3px;
+  vertical-align: middle;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.brand-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+}
+
+/* ── Forms / Inputs ──────────────────────────── */
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.form-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-field strong {
+  min-width: 80px;
+  text-align: right;
+}
+
+.input {
+  flex: 1;
+  padding: 0.65rem 0.85rem;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1a1a2e;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  outline: none;
+  transition: box-shadow 0.2s;
+}
+
+.input:focus {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4);
+}
 
 .input:invalid {
-  animation: justshake 0.3s forwards;
-  color: red;
+  animation: shake 0.3s forwards;
 }
 
-@keyframes justshake {
-  25% {
-    transform: translateX(5px);
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.25rem;
+}
+
+/* ── Button Group ────────────────────────────── */
+.action-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.action-group button {
+  width: 100%;
+}
+
+/* ── Video ───────────────────────────────────── */
+.scanner-video {
+  width: 100%;
+  max-width: 340px;
+  margin-top: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* ── Animations ──────────────────────────────── */
+@keyframes shake {
+  25% { transform: translateX(4px); }
+  50% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
+
+/* ── Desktop adjustments ─────────────────────── */
+@media (min-width: 600px) {
+  #root {
+    padding: 2rem;
   }
 
-  50% {
-    transform: translateX(-5px);
+  h1 {
+    font-size: 2.5rem;
   }
 
-  75% {
-    transform: translateX(5px);
+  .app-logo {
+    width: 110px;
   }
 
-  100% {
-    transform: translateX(-5px);
+  .action-group {
+    flex-direction: row;
+  }
+
+  .action-group button {
+    width: auto;
+    flex: 1;
   }
 }

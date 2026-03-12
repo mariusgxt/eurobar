@@ -1,58 +1,57 @@
 import { useRef, useState } from 'react';
-import './App.css'
+import { useTranslation } from 'react-i18next';
 import { BrowserMultiFormatReader } from '@zxing/browser';
-import ScannedResult from './ScannedResult';
+import type { ProductInfo } from './App';
 
-function Scanner({ onProductInfo }: { onProductInfo: (info: { countries: string, brands: string, barcode: string }) => void }) {
+function Scanner({ onProductInfo }: { onProductInfo: (info: ProductInfo) => void }) {
+  const { t } = useTranslation();
   const videoRef = useRef<HTMLVideoElement>(null);
   const codeReaderRef = useRef<BrowserMultiFormatReader | null>(null);
-  const [barcodeInput, setBarcodeInput] = useState("");
+  const [barcodeInput, setBarcodeInput] = useState('');
   const [showBarcodeInput, setShowBarcodeInput] = useState(false);
 
   const fetchAndSendProductInfo = async (barcode: string) => {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
-      
-      const response = await fetch(`http://localhost:8080/api/products/lookup/${barcode}`, {
-        signal: controller.signal
+
+      const response = await fetch(`http://localhost:8080/api/products/lookup/${encodeURIComponent(barcode)}`, {
+        signal: controller.signal,
       });
-      
+
       clearTimeout(timeoutId);
-      
+
       if (response.ok) {
         const product = await response.json();
-        onProductInfo({ 
-          countries: product.region || 'Unknown', 
-          brands: product.company || 'Unknown', 
-          barcode 
+        onProductInfo({
+          countries: product.region || t('result.unknown'),
+          brands: product.company || t('result.unknown'),
+          barcode,
         });
       } else {
-        console.error('Response not ok:', response.status, response.statusText);
-        onProductInfo({ countries: 'Not found', brands: 'Not found', barcode });
+        onProductInfo({ countries: t('result.notFound'), brands: t('result.notFound'), barcode });
       }
-    } catch (error) {
-      console.error('Fetch error:', error);
-      onProductInfo({ countries: 'Fetch error', brands: 'Fetch error', barcode });
+    } catch {
+      onProductInfo({ countries: t('result.fetchError'), brands: t('result.fetchError'), barcode });
     }
-  };
-
-  const handleTypeClick = () => {
-    setShowBarcodeInput(true);
   };
 
   const handleBarcodeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (barcodeInput.trim() !== "") {
-      fetchAndSendProductInfo(barcodeInput.trim());
+    const trimmed = barcodeInput.trim();
+    if (trimmed) {
+      fetchAndSendProductInfo(trimmed);
       setShowBarcodeInput(false);
-      setBarcodeInput("");
+      setBarcodeInput('');
     }
   };
 
   const handleScanClick = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' },
+      });
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         videoRef.current.play();
@@ -63,9 +62,9 @@ function Scanner({ onProductInfo }: { onProductInfo: (info: { countries: string,
 
         let scanned = false;
 
-        codeReaderRef.current.decodeFromVideoElement(videoRef.current, async (result) => {
-          if (result && !scanned) {
-            const barcode = result.getText();
+        codeReaderRef.current.decodeFromVideoElement(videoRef.current, (_result) => {
+          if (_result && !scanned) {
+            const barcode = _result.getText();
             if (barcode && barcode.trim() !== '') {
               scanned = true;
               stream.getTracks().forEach(track => track.stop());
@@ -76,43 +75,45 @@ function Scanner({ onProductInfo }: { onProductInfo: (info: { countries: string,
         });
       }
     } catch {
-      onProductInfo({ countries: 'Camera error', brands: 'Camera error', barcode: '' });
+      onProductInfo({ countries: t('result.cameraError'), brands: t('result.cameraError'), barcode: '' });
     }
   };
 
   return (
     <>
-      <img src="/assets/europeLogo.png" alt="Eurobar Logo" style={{ width: '35%', marginTop: '-1500px' }} />
-      <h1>
-        EuroBar
-      </h1>
-      <button onClick={handleTypeClick}>Click here to type in the Barcode</button>
+      <div className="action-group">
+        <button onClick={() => setShowBarcodeInput(prev => !prev)}>
+          {t('scanner.typeBarcode')}
+        </button>
+        <button onClick={handleScanClick}>
+          {t('scanner.scanBarcode')}
+        </button>
+      </div>
+
       {showBarcodeInput && (
         <div className="result-card">
-          <form onSubmit={handleBarcodeSubmit} style={{ margin: '1rem auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', maxWidth: 300}}>
+          <form onSubmit={handleBarcodeSubmit} className="form-stack">
             <input
               type="text"
-              placeholder="Enter barcode"
+              className="input"
+              placeholder={t('scanner.placeholder')}
               value={barcodeInput}
               onChange={e => setBarcodeInput(e.target.value)}
-              style={{ maxWidth: 190, padding: 12, border: 'none', borderRadius: 4, boxShadow: '2px 2px 7px 0 rgb(0,0,0,0.2)', outline: 'none', background: 'white', color: 'dimgray' }}
               autoFocus
             />
-            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
-              <button type="submit">Submit</button>
-              <button type="button" onClick={() => { setShowBarcodeInput(false); setBarcodeInput(""); }}>Cancel</button>
+            <div className="form-actions">
+              <button type="submit">{t('scanner.submit')}</button>
+              <button type="button" onClick={() => { setShowBarcodeInput(false); setBarcodeInput(''); }}>
+                {t('scanner.cancel')}
+              </button>
             </div>
           </form>
         </div>
       )}
-      <p> </p>
-      <button onClick={handleScanClick}>Click here to Scan the Barcode</button>
-      <div>
-        <video ref={videoRef} style={{ width: '300px', marginTop: '20px' }} autoPlay />
-      </div>
+
+      <video ref={videoRef} className="scanner-video" autoPlay playsInline />
     </>
-  )
+  );
 }
 
 export default Scanner;
-export { ScannedResult };

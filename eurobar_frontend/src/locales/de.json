@@ -1,0 +1,35 @@
+{
+  "app": {
+    "title": "EuroBar",
+    "subtitle": "Produkte scannen und Herkunft entdecken"
+  },
+  "home": {
+    "startButton": "Scannen starten"
+  },
+  "scanner": {
+    "typeBarcode": "Barcode manuell eingeben",
+    "scanBarcode": "Mit Kamera scannen",
+    "placeholder": "Barcode eingeben",
+    "submit": "Absenden",
+    "cancel": "Abbrechen"
+  },
+  "result": {
+    "heading": "Scan-Ergebnis",
+    "barcode": "Barcode",
+    "countries": "Länder",
+    "brands": "Marken",
+    "addMissing": "Fehlende Informationen hinzufügen",
+    "scanAgain": "Erneut scannen",
+    "thankYou": "Vielen Dank! Produkt wurde zur Datenbank hinzugefügt.",
+    "addFailed": "Produkt konnte nicht hinzugefügt werden: {{error}}",
+    "networkError": "Netzwerkfehler: {{error}}",
+    "notFound": "Nicht gefunden",
+    "unknown": "Unbekannt",
+    "fetchError": "Abruffehler",
+    "cameraError": "Kamerafehler"
+  },
+  "language": {
+    "en": "English",
+    "de": "Deutsch"
+  }
+}
