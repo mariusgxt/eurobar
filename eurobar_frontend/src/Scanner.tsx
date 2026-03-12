@@ -15,7 +15,7 @@ function Scanner({ onProductInfo }: { onProductInfo: (info: ProductInfo) => void
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-      const response = await fetch(`http://localhost:8080/api/products/lookup/${encodeURIComponent(barcode)}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/lookup/${encodeURIComponent(barcode)}`, {
         signal: controller.signal,
       });
 
