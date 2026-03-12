@@ -1,0 +1,17 @@
+{
+  "name": "eurobar",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Barcode scanner to discover product origins — React frontend, Spring Boot backend, PostgreSQL database",
+  "scripts": {
+    "start": "concurrently -n db,api,app -c blue,green,cyan \"cd database && docker compose up\" \"cd eurobar_backend && .\\gradlew bootRun\" \"cd eurobar_frontend && npm run dev\"",
+    "start:db": "cd database && docker compose up -d",
+    "start:backend": "cd eurobar_backend && .\\gradlew bootRun",
+    "start:frontend": "cd eurobar_frontend && npm run dev",
+    "stop:db": "cd database && docker compose down",
+    "install:frontend": "cd eurobar_frontend && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
