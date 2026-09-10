@@ -8,6 +8,10 @@ function ScannedResult({ info }: { info: ProductInfo }) {
   const [showForm, setShowForm] = useState(false);
   const [countryInput, setCountryInput] = useState('');
   const [brandInput, setBrandInput] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState('');
   const [failedBrandLogos, setFailedBrandLogos] = useState<Record<string, boolean>>({});
 
   const isMissing =
@@ -17,10 +21,20 @@ function ScannedResult({ info }: { info: ProductInfo }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (saving) return;
+    setSaving(true);
+    setSaveError('');
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products`, {
+      const api = import.meta.env.VITE_API_URL || '';
+      const bytes = new TextEncoder().encode(`${username}:${password}`);
+      const authorization = `Basic ${btoa(Array.from(bytes, byte => String.fromCharCode(byte)).join(''))}`;
+      const tokenResponse = await fetch(`${api}/api/csrf`, { credentials: 'include', headers: { Authorization: authorization } });
+      if (!tokenResponse.ok) throw new Error(t('result.signInFailed'));
+      const csrf = await tokenResponse.json();
+      const response = await fetch(`${api}/api/products`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json', Authorization: authorization, [csrf.headerName]: csrf.token },
         body: JSON.stringify({
           barcode: info.barcode,
           region: countryInput,
@@ -29,14 +43,16 @@ function ScannedResult({ info }: { info: ProductInfo }) {
       });
       if (response.ok) {
         alert(t('result.thankYou'));
+        setShowForm(false);
       } else {
-        const errorText = await response.text();
-        alert(t('result.addFailed', { error: errorText }));
+        throw new Error(response.status === 401 ? t('result.signInFailed') : t('result.saveFailed'));
       }
     } catch (err) {
-      alert(t('result.networkError', { error: String(err) }));
+      setSaveError(err instanceof Error ? err.message : t('result.saveFailed'));
+    } finally {
+      setPassword('');
+      setSaving(false);
     }
-    setShowForm(false);
   };
 
   function getCountryFlag(country: string) {
@@ -115,6 +131,14 @@ function ScannedResult({ info }: { info: ProductInfo }) {
 
       {showForm && (
         <form onSubmit={handleSubmit} className="form-stack">
+          <p>{t('result.accountRequired')}</p>
+          <label className="form-field">{t('result.username')}
+            <input className="input" autoComplete="username" value={username} onChange={e => setUsername(e.target.value)} required pattern="[^:]+" />
+          </label>
+          <label className="form-field">{t('result.password')}
+            <input className="input" type="password" autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} required />
+          </label>
+          {saveError && <p role="alert">{saveError}</p>}
           <div className="form-field">
             <strong>{t('result.countries')}:</strong>
             <input
@@ -134,8 +158,8 @@ function ScannedResult({ info }: { info: ProductInfo }) {
             />
           </div>
           <div className="form-actions">
-            <button type="submit">{t('scanner.submit')}</button>
-            <button type="button" onClick={() => setShowForm(false)}>{t('scanner.cancel')}</button>
+            <button type="submit" disabled={saving}>{t('scanner.submit')}</button>
+            <button type="button" disabled={saving} onClick={() => { setPassword(''); setShowForm(false); }}>{t('scanner.cancel')}</button>
           </div>
         </form>
       )}

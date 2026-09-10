@@ -1,9 +1,10 @@
 import './App.css';
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from './Header';
-import Scanner from './Scanner';
 import ScannedResult from './ScannedResult';
+
+const Scanner = lazy(() => import('./Scanner'));
 
 export interface ProductInfo {
   countries: string;
@@ -30,7 +31,9 @@ function App() {
     return (
       <>
         <Header />
-        <Scanner onProductInfo={handleProductInfo} />
+        <Suspense fallback={<p role="status">{t('scanner.loading')}</p>}>
+          <Scanner onProductInfo={handleProductInfo} />
+        </Suspense>
       </>
     );
   }

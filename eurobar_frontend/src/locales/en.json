@@ -7,6 +7,7 @@
     "startButton": "Start Scanning"
   },
   "scanner": {
+    "loading": "Loading scanner…",
     "typeBarcode": "Enter Barcode Manually",
     "scanBarcode": "Scan with Camera",
     "placeholder": "Enter barcode",
@@ -26,7 +27,12 @@
     "notFound": "Not found",
     "unknown": "Unknown",
     "fetchError": "Fetch error",
-    "cameraError": "Camera error"
+    "cameraError": "Camera error",
+    "accountRequired": "You need a Eurobar account to contribute products.",
+    "username": "Username",
+    "password": "Password",
+    "signInFailed": "Sign-in failed. Check your username and password.",
+    "saveFailed": "Saving failed. Your product details have been kept; please try again."
   },
   "language": {
     "en": "English",
